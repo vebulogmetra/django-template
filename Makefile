@@ -26,15 +26,19 @@ postgres:
 
 .PHONY: app
 app:
-	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up -d
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} up --build -d
 
 .PHONY: app-down
 app-down:
-	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} down -v
+	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} ${ENV} down
 
 .PHONY: app-logs
 app-logs:
 	${LOGS} ${APP_CONTAINER} -f
+
+.PHONY: makemigrations
+makemigrations:
+	${EXEC} ${APP_CONTAINER} ${MANAGE_PY} makemigrations
 
 .PHONY: migrate
 migrate:
